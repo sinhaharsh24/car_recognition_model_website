@@ -1,4 +1,6 @@
 # === train_model.py ===
+# pip install -r requirements.txt
+# use this before training 
 import os
 import zipfile
 import tensorflow as tf

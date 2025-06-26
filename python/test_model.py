@@ -16,24 +16,30 @@ IMAGE_SIZE = 128
 
 # === Load and preprocess the test image ===
 def load_image(image_path):
-    img = Image.open(image_path).convert('RGB')
-    img = img.resize((IMAGE_SIZE, IMAGE_SIZE))
-    img_array = np.array(img) / 255.0
+    # Load high-res image for display
+    original_img = Image.open(image_path).convert('RGB')
+
+    # Resize copy for model prediction
+    resized_img = original_img.resize((IMAGE_SIZE, IMAGE_SIZE))
+    img_array = np.array(resized_img) / 255.0
     img_array = np.expand_dims(img_array, axis=0)
-    return img, img_array
+
+    return original_img, img_array
 
 # === Predict and display ===
 def predict_image(image_path):
-    img, img_array = load_image(image_path)
+    original_img, img_array = load_image(image_path)
     predictions = model.predict(img_array)
     predicted_class = np.argmax(predictions, axis=1)[0]
     predicted_label = class_names[predicted_class]
+    confidence = np.max(predictions) * 100
 
     print(f"Predicted Class Index: {predicted_class}")
-    print(f"Predicted Label: {predicted_label}")
+    print(f"Predicted Label: {predicted_label} ({confidence:.2f}%)")
 
-    plt.imshow(img)
-    plt.title(f"Prediction: {predicted_label}")
+    # Show original high-resolution image
+    plt.imshow(original_img)
+    plt.title(f"Prediction: {predicted_label} ({confidence:.2f}%)")
     plt.axis('off')
     plt.show()
 
