@@ -1,6 +1,4 @@
 tensorflow-cpu==2.13.0
-matplotlib
+streamlit==1.32.2
 pillow
-opencv-python
-keras
-scipy
+numpy
